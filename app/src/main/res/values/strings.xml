@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Спецэнергоконтроль</string>
+
+    <!-- Errors-->
+    <string name="exception_no_internet">Проверьте интернет соединение</string>
+    <string name="error">Ошибка</string>
+    <string name="exception_client_error">Не правильный запрос</string>
+    <string name="exception_server_error">Ошибка на сервере</string>
+
+    <!-- Auth activity-->
+    <string name="sign_in_text">ВХОД</string>
+    <string name="email_hint_text">Email</string>
+    <string name="password_hint_text">Password</string>
+    <string name="email_valid_error">Введите Login</string>
+    <string name="password_valid_error">Введите пароль</string>
+
+    <!--Menu-->
+    <string name="tasks_title">Задачи</string>
+    <string name="not_synced_tasks_title">Несихронизированные задачи</string>
+    <string name="search_abonent_title">Поиск абонента</string>
+    <string name="logout_title">Выход</string>
+
+    <!--Dialog -->
+    <string name="queit_dialog_allert">Вы уверены что хотите выйти?</string>
+    <string name="syncronize_title">Синхронизировать</string>
+    <string name="there_are_no_tasks">Нет задач</string>
+    <string name="wait_text">Подождите</string>
+
+</resources>

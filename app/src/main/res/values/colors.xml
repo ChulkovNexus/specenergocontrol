@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="more_button_color_pressed">#ab918f</color>
+    <color name="apply_patch_button_border_color">#cfd8dc</color>
+
+    <color name="authPrimary">#FF6D00</color>
+    <color name="authPrimaryDark">#e16104</color>
+
+    <color name="gray">#d0d0d0</color>
+
+    <color name="line_chart_color">#cfd8dc</color>
+    <color name="line_chart_color_fill">#7f9dab</color>
+    <color name="chart_circle_color1">#f36c60</color>
+    <color name="chart_circle_color2">#20b11d</color>
+
+
+    <color name="auth_grey">#f1f1f1</color>
+    <color name="white_pressed">#f6f6f6</color>
+    <color name="text_dark_color">#3f3631</color>
+    <color name="more_button_color">#927472</color>
+    <color name="text_dark_gray_color">#786362</color>
+    <color name="text_apply_button_color">#616161</color>
+    <color name="app_red_color">#f36c60</color>
+    <color name="app_red_secondary_color">#fbaaa7</color>
+    <color name="app_blue_color">#2d8be2</color>
+    <color name="app_blue_secondary_color">#96c1ee</color>
+    <color name="app_yellow_color">#ffae40</color>
+    <color name="app_yellow_secondary_color">#ffd59b</color>
+    <color name="app_sea_color">#4db6ac</color>
+    <color name="text_gray_color">#c5c5c5</color>
+    <color name="primaryDark">#b8b8b8</color>
+    <color name="apply_patch_button_color">#f6f7f8</color>
+    <color name="apply_patch_button_pressed_color">#8fd88e</color>
+    <color name="street_color">#e2e8a4</color>
+    <color name="building_item_color">#b7bc85</color>
+</resources>

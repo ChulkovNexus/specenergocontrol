@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white">
+
+    <com.rey.material.widget.ProgressView
+        android:id="@+id/sign_in_progress"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:pv_autostart="false"
+        app:pv_circular="true"
+        app:pv_progressStyle="@style/InOutCircularProgressDrawableStyle"
+        app:pv_progressMode="indeterminate"/>
+
+    <RelativeLayout
+        android:id="@+id/sign_in_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/sign_in_title_image"
+            android:layout_width="180dp"
+            android:src="@drawable/logo"
+            android:layout_height="180dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="25dp" />
+
+        <EditText
+            android:id="@+id/sign_in_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sign_in_title_image"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/auth_button_shape"
+            android:hint="@string/email_hint_text"
+            android:inputType="textEmailAddress"
+            android:text="ivanov" />
+
+        <EditText
+            android:id="@+id/sign_in_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sign_in_login"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/auth_button_shape"
+            android:hint="@string/password_hint_text"
+            android:inputType="textPassword"
+            android:text="123456" />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/auth_button_bg"
+            android:text="@string/sign_in_text"
+            android:textColor="@color/text_dark_color" />
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/authPrimary</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/text_dark_color</item>
+    </style>
+
+    <style name="AuthActivity" parent="AppTheme">
+        <item name="colorPrimary">@color/authPrimary</item>
+        <item name="colorPrimaryDark">@color/authPrimaryDark</item>
+    </style>
+
+    <style name="InOutCircularProgressDrawableStyle" parent="Material.Drawable.CircularProgress">
+        <item name="cpd_inAnimDuration">500</item>
+        <item name="cpd_inStepPercent">0.5</item>
+        <item name="cpd_outAnimDuration">200</item>
+        <item name="cpd_strokeColor">@color/authPrimary</item>
+    </style>
+
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <com.rey.material.widget.ProgressView
+        android:id="@+id/tasks_street_progress"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:pv_autostart="false"
+        app:pv_circular="true"
+        app:pv_progressStyle="@style/InOutCircularProgressDrawableStyle"
+        app:pv_progressMode="indeterminate"/>
+
+    <RelativeLayout
+        android:id="@+id/tasks_street_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ExpandableListView
+            android:id="@+id/tasks_street_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:childDivider="@android:color/transparent"
+            android:groupIndicator="@android:color/transparent"
+            android:divider="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/tasks_street_empti_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/there_are_no_tasks"
+            android:textSize="22sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>
