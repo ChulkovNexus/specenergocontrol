@@ -13,12 +13,11 @@ import com.specenergocontrol.utils.StoreUtils;
 public class GetTasksCommand extends GetRequest {
 
 
-    private final String url = Constants.BASE_URL + "/tasks/%1$s";
+    private final String url = Constants.BASE_URL + "/tasks";
 
     public GetTasksCommand(Context baseContext) {
         super(baseContext);
-        User user = StoreUtils.getInstance(baseContext).getUser();
-        setUrl(String .format(url, user.getId()));
+        setUrl(String .format(url));
         setParser(new TasksParser());
     }
 }

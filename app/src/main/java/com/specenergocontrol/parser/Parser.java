@@ -21,6 +21,13 @@ public interface Parser<T extends Serializable> {
     String METERING_DEVICE_NUMBER = "MeteringDeviceNumber";
     String ENERGY_VALUE_DATE = "EnergyValueDate";
     String ENERGY_VALUE = "EnergyValue";
+    String DATA = "Data";
+    String METERING_DEVICE_SCALE = "MeteringDeviceScale";
+    String HOUSING = "Housing";
+    String ACCOUNT = "Account";
+    String ZONES = "Zones";
+    String TYPE = "Type";
+    String NAME = "Name";
 
 
     public T parse(String string) throws JSONException, ParseException;

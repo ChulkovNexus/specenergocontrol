@@ -9,11 +9,6 @@ import android.widget.Toast;
 import com.specenergocontrol.R;
 
 import org.json.JSONException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
-
 
 import java.io.Serializable;
 import java.net.ConnectException;
@@ -107,9 +102,6 @@ public class AsyncTaskExecutor {
             } catch (ConnectException e) {
                 e.printStackTrace();
                 return new Pair(ERROR_CODE_INTERNET_EXCEPTION, null);
-            } catch (ResourceAccessException e) {
-                e.printStackTrace();
-                return new Pair(ERROR_CODE_INTERNET_EXCEPTION, null);
             } catch (BussinessException e) {
                 e.printStackTrace();
                 if (e.getCode()!=0){
@@ -117,15 +109,6 @@ public class AsyncTaskExecutor {
                 } else {
                     return new Pair(ERROR_CODE_BUSSINESS_EXCEPTION, e.getMessage());
                 }
-            } catch (HttpServerErrorException e) {
-                e.printStackTrace();
-                return new Pair(ERROR_CODE_HTTP_SERVER_EXCEPTION, e.getResponseBodyAsString());
-            } catch (HttpClientErrorException e) {
-                e.printStackTrace();
-                if (e.getStatusCode() == HttpStatus.UNAUTHORIZED){
-                    return new Pair(ERROR_CODE_UNAUTHORIZED, null);
-                }
-                return new Pair(ERROR_CODE_HTTP_CLIENT_EXCEPTION, e.getResponseBodyAsString());
             } catch (JSONException e) {
                 e.printStackTrace();
                 return new Pair(ERROR_CODE_INTERNAL_EXCEPTION, null);
@@ -153,18 +136,7 @@ public class AsyncTaskExecutor {
                 if (errorCode == ERROR_CODE_INTERNET_EXCEPTION) {
                     Toast.makeText(command.getContext(), R.string.exception_no_internet, Toast.LENGTH_LONG).show();
                 } else if (errorCode == ERROR_CODE_BUSSINESS_EXCEPTION || errorCode == ERROR_CODE_INTERNAL_EXCEPTION) {
-//                    if (result.second!=null && !((String)result.second).isEmpty()) {
-//                        Toast.makeText(command.getContext(), ((String)result.second), Toast.LENGTH_LONG).show();
-//                    } else {
-                        Toast.makeText(command.getContext(), R.string.error, Toast.LENGTH_LONG).show();
-//                    }
-//                } else if (errorCode == ERROR_CODE_BUSSINESS_RELOGIN_EXCEPTION) {
-//                    int bussinessCode = (int) result.second;
-//                    if (bussinessCode == BussinessException.CODE_UNCNOUN_USER){
-//                        Toast.makeText(command.getContext(), R.string.pin_unknown_user, Toast.LENGTH_LONG).show();
-//                    }else {
-//                        Toast.makeText(command.getContext(), R.string.pin_try_count, Toast.LENGTH_LONG).show();
-//                    }
+                    Toast.makeText(command.getContext(), R.string.error, Toast.LENGTH_LONG).show();
                 } else if (errorCode == ERROR_CODE_HTTP_CLIENT_EXCEPTION) {
                     ErrorHandler.parseError(activity, (String)result.second);
                     Toast.makeText(command.getContext(), R.string.exception_client_error, Toast.LENGTH_LONG).show();

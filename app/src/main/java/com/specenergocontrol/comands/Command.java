@@ -7,40 +7,43 @@ import android.util.Log;
 import com.specenergocontrol.parser.Parser;
 import com.specenergocontrol.utils.Constants;
 import com.specenergocontrol.utils.StoreUtils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.ConnectException;
+import java.security.cert.CertificateException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by Комп on 16.12.2014.
  */
 public abstract class Command implements Serializable {
     public static final String AUTHORIZATION = "Authorization";
-
-//    public static final String ACCESS_TOKEN = "access-token=";
+    protected static final String USER_AGENT = "User-Agent";
+    public static final String ACCEPT = "Accept";
+    public static final String CONTENT_TYPE = "Content-Type";
+    public static final String APPLICATION_JSON = "application/json";
 
     private Context context;
     protected String url;
     protected Parser parser;
     private String originalUrl;
     private String loadUrl = "";
-    private int page;
-    private int pageCount;
-    private int entityPerPage;
-    private int entityCount;
-    private boolean havePaganation;
     private boolean needToken = true;
+    public static OkHttpClient okHttpClient;
 
     protected void setNeedToken(boolean needToken) {
         this.needToken = needToken;
@@ -50,14 +53,8 @@ public abstract class Command implements Serializable {
         this.context = context;
     }
 
-    public Serializable execute() throws HttpServerErrorException, HttpClientErrorException, ParseException, JSONException, ConnectException, TimeoutException {
+    public Serializable execute() throws ParseException, JSONException, ConnectException, TimeoutException, IOException {
         url = loadUrl;
-//        if (needToken) {
-//            String token = StoreUtils.getInstance(context).getToken();
-//            if (loadUrl.charAt(loadUrl.length()-1) != '?')
-//                url += '&';
-//            url += token;
-//        }
         return null;
     }
 
@@ -74,54 +71,63 @@ public abstract class Command implements Serializable {
         this.loadUrl = url;
     }
 
-    protected void fillPagenationData(ResponseEntity<String> exchange) {
-        if (exchange.getHeaders().getFirst("X-Pagination-Page-Count") == null) {
-            havePaganation=false;
-            return;
+    protected static OkHttpClient getOkHttpClient(){
+        if (okHttpClient == null) {
+            okHttpClient = getUnsafeOkHttpClient();
         }
-
-        pageCount = Integer.parseInt(exchange.getHeaders().getFirst("X-Pagination-Page-Count"));
-//        entityCount = Integer.parseInt(exchange.getHeaders().getFirst("X-Pagination-Total-Count"));
-        page = Integer.parseInt(exchange.getHeaders().getFirst("X-Pagination-Current-Page"));
-//        entityPerPage = Integer.parseInt(exchange.getHeaders().getFirst("X-Pagination-Per-Page"));
-
-        havePaganation = page<pageCount;
+        return okHttpClient;
     }
 
-    public void loadNextPage() {
-        if (havePaganation) {
-            loadUrl = originalUrl + "&page=" + (page+1);
-        } else {
-            throw new IllegalStateException("Command havePaganation false");
+    private static OkHttpClient getUnsafeOkHttpClient() {
+        try {
+            // Create a trust manager that does not validate certificate chains
+            final TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+                    }
+            };
+
+            // Install the all-trusting trust manager
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            // Create an ssl socket factory with our all-trusting manager
+            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.setSslSocketFactory(sslSocketFactory);
+            okHttpClient.setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+
+            return okHttpClient;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    protected HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ArrayList<MediaType> acceptList = new ArrayList<>();
-        acceptList.add(MediaType.APPLICATION_JSON);
-        headers.setAccept(acceptList);
-        headers.setUserAgent(Constants.USER_AGENT);
+    protected Request.Builder addHeaders(Request.Builder builder) {
         if (needToken) {
             String token = StoreUtils.getInstance(context).getToken();
-            headers.add(AUTHORIZATION, "Token" + token);
+            builder.addHeader(AUTHORIZATION, "Token" + token);
         }
-        return headers;
-    }
-
-    public void loadOrigin() {
-        loadUrl = originalUrl;
-    }
-
-    public void setPage(int page) {
-        havePaganation = true;
-        this.page = page;
-    }
-
-
-    public boolean haveNextPage() {
-        return havePaganation;
+        return builder.addHeader(USER_AGENT, Constants.USER_AGENT)
+                .addHeader(USER_AGENT, Constants.USER_AGENT)
+                .addHeader(ACCEPT, APPLICATION_JSON)
+                .addHeader(CONTENT_TYPE, APPLICATION_JSON);
     }
 
 }

@@ -25,13 +25,12 @@ import com.specenergocontrol.model.TaskModel;
 import com.specenergocontrol.ui.fragment.AsyncFragment;
 import com.specenergocontrol.ui.fragment.TasksListFragment;
 import com.specenergocontrol.ui.fragment.MenuFragment;
+import com.specenergocontrol.utils.RealmHelper;
 
 import org.json.JSONException;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.net.ConnectException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
@@ -163,10 +162,10 @@ public class TasksActivity extends ActionBarActivity {
             progress =  ProgressDialog.show(context, context.getString(R.string.syncronize_title), context.getString(R.string.wait_text), true);
             asyncTaskExecutor.execute(new Command(asyncTaskExecutor.getActivity()) {
                 @Override
-                public Serializable execute() throws HttpServerErrorException, HttpClientErrorException, ParseException, JSONException, ConnectException, TimeoutException {
+                public Serializable execute() throws ParseException, JSONException, IOException, TimeoutException {
                     GetTasksCommand getTasksCommand = new GetTasksCommand(asyncTaskExecutor.getActivity());
                     ArrayList<TaskModel> tasksList = (ArrayList<TaskModel>) getTasksCommand.execute();
-                    saveTasksList(tasksList, getContext());
+                    RealmHelper.saveTasksList(tasksList, getContext());
                     createStreetEntities(getContext());
                     return super.execute();
                 }
@@ -183,13 +182,6 @@ public class TasksActivity extends ActionBarActivity {
                     progress.dismiss();
                 }
             });
-        }
-
-        private void saveTasksList(ArrayList<TaskModel> tasksList, Context context) {
-            Realm realm = Realm.getInstance(context);
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(tasksList);
-            realm.commitTransaction();
         }
 
         private void createStreetEntities(Context context) {

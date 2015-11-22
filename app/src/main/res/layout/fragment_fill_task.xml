@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="15dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+        <EditText
+            style="@style/EditText"
+            android:id="@+id/account_edit_text"
+            android:layout_width="match_parent"
+            android:hint="@string/account_hint"
+            android:layout_height="wrap_content"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <EditText
+        style="@style/MultilineEditText"
+        android:id="@+id/comment_edit_text"
+        android:layout_marginTop="20dp"
+        android:gravity="top"
+        android:padding="8dp"
+        android:lines="4"
+        android:hint="@string/comment_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

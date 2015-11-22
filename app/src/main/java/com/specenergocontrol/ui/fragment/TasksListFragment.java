@@ -16,6 +16,7 @@ import com.specenergocontrol.model.StreetEntity;
 import com.specenergocontrol.model.TaskModel;
 import com.specenergocontrol.ui.activity.TasksActivity;
 import com.specenergocontrol.ui.adapter.TasksStreetAdapter;
+import com.specenergocontrol.utils.RealmHelper;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class TasksListFragment extends AsyncFragment {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 String street = myAdapter.getGroup(groupPosition).getEntityTitle();
                 String building = myAdapter.getChild(groupPosition, childPosition).getEntityTitle();
-                ArrayList<TaskModel> tasksList = loadTasks(street, building);
+                ArrayList<TaskModel> tasksList = RealmHelper.loadTasks(getActivity(), street, building);
                 if (tasksList.size()>1) {
                     setAppartmantsFragment(tasksList);
                 }else {
@@ -60,7 +61,6 @@ public class TasksListFragment extends AsyncFragment {
 
     }
 
-
     private void setAppartmantsFragment(ArrayList<TaskModel> taskModel) {
 
     }
@@ -71,12 +71,6 @@ public class TasksListFragment extends AsyncFragment {
         ft.replace(R.id.tasks_main_container, fragment, TasksActivity.FRAGMENT_TAG);
         ft.commit();
         ((TasksActivity)getActivity()).currentFragmentChanged(fragment);
-    }
-
-    private ArrayList<TaskModel> loadTasks(String street, String building) {
-        Realm realm = Realm.getInstance(getActivity());
-        RealmResults<TaskModel> r = realm.where(TaskModel.class).equalTo("street", street).equalTo("building", building).findAll();
-        return new ArrayList<>(r);
     }
 
     @Override

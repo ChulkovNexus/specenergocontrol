@@ -1,8 +1,14 @@
 package com.specenergocontrol.model;
 
-import java.io.Serializable;
+import android.content.Context;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -17,11 +23,13 @@ public class TaskModel extends RealmObject implements Serializable {
     private String userName;
     private String city;
     private String meteringDeviceModel;
-    private String energyValueDate;
-    private int energyValue;
     private String meteringDeviceNumber;
     private int apartment;
     private boolean complited;
+    private String account;
+    private String housing;
+    @Ignore
+    private ArrayList<Zone> zones;
 
     public String getId() {
         return id;
@@ -71,22 +79,6 @@ public class TaskModel extends RealmObject implements Serializable {
         return meteringDeviceModel;
     }
 
-    public void setEnergyValueDate(String energyValueDate) {
-        this.energyValueDate = energyValueDate;
-    }
-
-    public String getEnergyValueDate() {
-        return energyValueDate;
-    }
-
-    public void setEnergyValue(int energyValue) {
-        this.energyValue = energyValue;
-    }
-
-    public int getEnergyValue() {
-        return energyValue;
-    }
-
     public void setMeteringDeviceNumber(String meteringDeviceNumber) {
         this.meteringDeviceNumber = meteringDeviceNumber;
     }
@@ -109,5 +101,30 @@ public class TaskModel extends RealmObject implements Serializable {
 
     public void setComplited(boolean complited) {
         this.complited = complited;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+
+    public void setHousing(String housing) {
+        this.housing = housing;
+    }
+
+    public String getHousing() {
+        return housing;
+    }
+
+    public void setZones(ArrayList<Zone> zones) {
+        this.zones = zones;
+    }
+
+    public ArrayList<Zone> getZones() {
+        return zones;
     }
 }

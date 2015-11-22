@@ -25,5 +25,7 @@
     <string name="syncronize_title">Синхронизировать</string>
     <string name="there_are_no_tasks">Нет задач</string>
     <string name="wait_text">Подождите</string>
+    <string name="account_hint">Лицевой счет</string>
+    <string name="comment_hint">Оставить комментарий</string>
 
 </resources>

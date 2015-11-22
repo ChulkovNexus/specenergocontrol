@@ -4,26 +4,22 @@ import android.content.Context;
 import android.util.Log;
 
 import com.specenergocontrol.comands.Command;
-import com.specenergocontrol.http.CustomRestTamplate;
+import com.specenergocontrol.comands.HttpErrorException;
 import com.specenergocontrol.parser.Parser;
 import com.specenergocontrol.utils.Constants;
 import com.specenergocontrol.utils.HttpUtils;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.ConnectException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -31,39 +27,45 @@ import java.util.concurrent.TimeoutException;
  */
 public class PostJsonRequest extends Command {
 
+    private static final String TAG = PostJsonRequest.class.getSimpleName();
     private Parser parser;
     private String params;
+    public static final MediaType MEDIA_TYPE_JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
     public PostJsonRequest(Context context) {
         super(context);
     }
 
     @Override
-    public Serializable execute() throws HttpClientErrorException, HttpServerErrorException, ParseException, JSONException, ConnectException, TimeoutException {
+    public Serializable execute() throws IOException, ParseException, JSONException, HttpErrorException, TimeoutException {
         super.execute();
-        if (url==null || params==null) {
+        if (url==null || params==null){
             throw new IllegalStateException("url or params wasn't set");
         }
         if (!HttpUtils.checkInternet(getContext()))
             throw new ConnectException();
 
-        ResponseEntity<String> exchange;
-        CustomRestTamplate restTemplate = new CustomRestTamplate(getContext());
-        restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        Log.d(TAG, url);
+        Request.Builder builder = new Request.Builder();
 
-        HttpHeaders headers = getHeaders();
+        Request request = addHeaders(builder).url(url)
+                .post(RequestBody.create(MEDIA_TYPE_JSON, params))
+                .build();
+        Log.d("DEBUG", "requestUrl:" + (Constants.BASE_URL + url));
+        Log.d("DEBUG", "headers:" + request.headers().names());
+        Log.d("DEBUG", "params:" + params);
+        Response response = getOkHttpClient().newCall(request).execute();
+        if (response.code() == 200) {
+            if (parser != null) {
+                return parser.parse(response.body().string());
+            }
+        } else {
+            Log.d("DEBUG", response.message());
+            throw new HttpErrorException(response.code(), response.message());
+        }
 
-        Serializable dataObject = null;
-        HttpEntity<String> entity = new HttpEntity<String>(params, headers);
-
-        exchange = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-
-        Log.d("123", exchange.getBody());
-        if (parser!=null)
-            dataObject = parser.parse(exchange.getBody());
-
-        return dataObject;
+        return null;
     }
 
 
