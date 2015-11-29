@@ -3,7 +3,11 @@ package com.specenergocontrol.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -32,6 +36,28 @@ public class TasksListFragment extends AsyncFragment {
     private TasksStreetAdapter myAdapter;
     private ArrayList<StreetEntity> streetEntitiesList = new ArrayList<>();
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.tasks_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_sync) {
+            ((TasksActivity)getActivity()).startSync();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,12 +69,11 @@ public class TasksListFragment extends AsyncFragment {
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                String street = myAdapter.getGroup(groupPosition).getEntityTitle();
-                String building = myAdapter.getChild(groupPosition, childPosition).getEntityTitle();
-                ArrayList<TaskModel> tasksList = RealmHelper.loadTasks(getActivity(), street, building);
-                if (tasksList.size()>1) {
-                    setAppartmantsFragment(tasksList);
-                }else {
+                if (TextUtils.isEmpty(myAdapter.getChild(groupPosition, childPosition).getTaskId())) {
+                    setAppartmantsFragment(myAdapter.getChild(groupPosition, childPosition));
+                } else {
+                    ArrayList<TaskModel> tasksList = RealmHelper.loadTask(getActivity(),
+                            myAdapter.getChild(groupPosition, childPosition).getTaskId());
                     setFillTaskFragment(tasksList.get(0));
                 }
                 return false;
@@ -61,24 +86,37 @@ public class TasksListFragment extends AsyncFragment {
 
     }
 
-    private void setAppartmantsFragment(ArrayList<TaskModel> taskModel) {
-
+    private void setAppartmantsFragment(StreetEntity taskModel) {
+        AppartmentsFragmetn fragment = AppartmentsFragmetn.getInstance(taskModel.getPrimaryKey());
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.tasks_main_container, fragment, TasksActivity.FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
+        ((TasksActivity)getActivity()).currentFragmentChanged(fragment);
     }
 
     private void setFillTaskFragment(TaskModel task) {
         FillTaskFragmetn fragment = FillTaskFragmetn.getInstance(task);
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.tasks_main_container, fragment, TasksActivity.FRAGMENT_TAG);
+        ft.addToBackStack(null);
         ft.commit();
         ((TasksActivity)getActivity()).currentFragmentChanged(fragment);
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void reloadFromBase() {
         Realm realm = Realm.getInstance(getActivity());
-        RealmResults<StreetEntity> r = realm.where(StreetEntity.class).equalTo("isBuilding", false).findAll();
+        RealmResults<StreetEntity> r = realm.where(StreetEntity.class).equalTo("isBuilding", false).
+                equalTo("isAppartment", false).findAll();
         streetEntitiesList.clear();
         streetEntitiesList.addAll(r);
         myAdapter.notifyDataSetChanged();
+        realm.close();
     }
 }

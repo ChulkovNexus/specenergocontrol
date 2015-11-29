@@ -25,7 +25,7 @@ public class TasksParser implements Parser {
             JSONObject taskJson = tasksArray.getJSONObject(i);
             TaskModel taskModel = new TaskModel();
             taskModel.setAccount(taskJson.getString(ACCOUNT));
-            taskModel.setId(taskModel.getAccount());
+            taskModel.setId(taskJson.getString(ID));
             taskModel.setCity(taskJson.getString(CITY));
             taskModel.setStreet(taskJson.getString(STREET));
             String housing = null;

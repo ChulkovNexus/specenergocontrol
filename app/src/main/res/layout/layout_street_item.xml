@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="4dp">
 
@@ -28,6 +28,7 @@
                 android:layout_width="@dimen/street_item_heigth"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
+                android:visibility="gone"
                 android:src="@drawable/sended" />
 
             <TextView
@@ -35,6 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginLeft="25dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_dark_color"
                 android:textSize="16sp" />

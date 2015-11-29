@@ -13,10 +13,14 @@ import io.realm.annotations.PrimaryKey;
 public class StreetEntity extends RealmObject implements Serializable {
 
     @PrimaryKey
+    private String primaryKey;
+    private String taskId;
     private String entityTitle;
     private RealmList<StreetEntity> childEntityArray = new RealmList<>();
     private boolean complited;
     private boolean isBuilding;
+    private boolean isAppartment;
+    private String account;
 
     public String getEntityTitle() {
         return entityTitle;
@@ -27,7 +31,6 @@ public class StreetEntity extends RealmObject implements Serializable {
     }
 
     public RealmList<StreetEntity> getChildEntityArray() {
-
         return childEntityArray;
     }
 
@@ -51,4 +54,36 @@ public class StreetEntity extends RealmObject implements Serializable {
         this.isBuilding = isBuilding;
     }
 
+    public boolean isAppartment() {
+        return isAppartment;
+    }
+
+    public void setIsAppartment(boolean isAppartment) {
+        this.isAppartment = isAppartment;
+    }
+
+    public String getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getAccount() {
+        return account;
+    }
 }

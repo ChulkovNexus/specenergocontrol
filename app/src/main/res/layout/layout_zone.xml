@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="48dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:id="@+id/fill_task_value_text_input_layout"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+        <EditText
+            style="@style/EditText"
+            android:id="@+id/fill_task_value_edit_text"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:layout_height="wrap_content"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

@@ -26,6 +26,7 @@ import com.specenergocontrol.ui.fragment.AsyncFragment;
 import com.specenergocontrol.ui.fragment.TasksListFragment;
 import com.specenergocontrol.ui.fragment.MenuFragment;
 import com.specenergocontrol.utils.RealmHelper;
+import com.specenergocontrol.utils.StreetEntityUtils;
 
 import org.json.JSONException;
 
@@ -48,7 +49,7 @@ public class TasksActivity extends ActionBarActivity {
     private Fragment currentFragment;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
-    private SyncHelper syncHelper;
+    public SyncHelper syncHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,22 +74,6 @@ public class TasksActivity extends ActionBarActivity {
         super.onStop();
         syncHelper.detach();
         mDrawerLayout.closeDrawers();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tasks_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_sync) {
-            syncHelper.startSync();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void initToolBar() {
@@ -141,6 +126,10 @@ public class TasksActivity extends ActionBarActivity {
         currentFragment = fragment;
     }
 
+    public void startSync() {
+        syncHelper.startSync();
+    }
+
     private class SyncHelper {
         private final AsyncTaskExecutor asyncTaskExecutor;
         private ProgressDialog progress;
@@ -166,7 +155,7 @@ public class TasksActivity extends ActionBarActivity {
                     GetTasksCommand getTasksCommand = new GetTasksCommand(asyncTaskExecutor.getActivity());
                     ArrayList<TaskModel> tasksList = (ArrayList<TaskModel>) getTasksCommand.execute();
                     RealmHelper.saveTasksList(tasksList, getContext());
-                    createStreetEntities(getContext());
+                    StreetEntityUtils.createStreetEntities(getContext());
                     return super.execute();
                 }
             }, new CommandCallback() {
@@ -182,42 +171,6 @@ public class TasksActivity extends ActionBarActivity {
                     progress.dismiss();
                 }
             });
-        }
-
-        private void createStreetEntities(Context context) {
-            ArrayList<StreetEntity> streets = new ArrayList<>();
-            Realm realm = Realm.getInstance(context);
-            //Clear StreetEntity table
-            realm.beginTransaction();
-            realm.where(StreetEntity.class).findAll().clear();
-            realm.commitTransaction();
-
-            //create StreetEntities from TaskModels in base
-            RealmResults<TaskModel> allTasks = realm.where(TaskModel.class).findAll();
-            allTasks.sort("street");
-            StreetEntity lastStreet = new StreetEntity();
-            for (TaskModel task : allTasks) {
-                if (task.getStreet().equals(lastStreet.getEntityTitle())) {
-                    StreetEntity building =createBuildingForTask(task);
-                    lastStreet.getChildEntityArray().add(building);
-                } else {
-                    lastStreet = new StreetEntity();
-                    lastStreet.setEntityTitle(task.getStreet());
-                    StreetEntity building = createBuildingForTask(task);
-                    lastStreet.getChildEntityArray().add(building);
-                    streets.add(lastStreet);
-                }
-            }
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(streets);
-            realm.commitTransaction();
-        }
-
-        private StreetEntity createBuildingForTask(TaskModel task) {
-            StreetEntity building = new StreetEntity();
-            building.setIsBuilding(true);
-            building.setEntityTitle(task.getBuilding());
-            return building;
         }
 
     }

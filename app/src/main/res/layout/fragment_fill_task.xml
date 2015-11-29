@@ -1,37 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_margin="15dp"
+    android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <android.support.design.widget.TextInputLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fill_task_save_button">
 
-        <EditText
-            style="@style/EditText"
-            android:id="@+id/account_edit_text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:hint="@string/account_hint"
-            android:layout_height="wrap_content"
-            />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:paddingBottom="10dp"
+            android:layout_margin="15dp"
+            android:orientation="vertical">
 
-    <EditText
-        style="@style/MultilineEditText"
-        android:id="@+id/comment_edit_text"
-        android:layout_marginTop="20dp"
-        android:gravity="top"
-        android:padding="8dp"
-        android:lines="4"
-        android:hint="@string/comment_hint"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <EditText
+                    android:id="@+id/fill_task_account_edit_text"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/account_hint" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                <EditText
+                    android:id="@+id/fill_task_value_size_edit_text"
+                    style="@style/EditText"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/value_size_hint" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/values_hint"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:id="@+id/fill_task_zones_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/fill_task_image_preview"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/camera_icon" />
+
+                <Button
+                    android:id="@+id/fill_task_image_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/orange_button_bg"
+                    android:text="@string/photo_text" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/fill_task_comment_edit_text"
+                style="@style/MultilineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="top"
+                android:hint="@string/comment_hint"
+                android:lines="4"
+                android:padding="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/fill_task_save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/orange_button_bg"
+        android:text="@string/save_text" />
+</RelativeLayout>

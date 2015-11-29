@@ -12,7 +12,7 @@ public class Zone extends RealmObject implements Serializable{
 
     @PrimaryKey
     private String primaryKey;
-    private String taskId;
+    private String account;
     private String name;
     private int period;
 
@@ -32,20 +32,20 @@ public class Zone extends RealmObject implements Serializable{
         return period;
     }
 
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-        primaryKey = taskId + name;
-    }
-
     public String getPrimaryKey() {
         return primaryKey;
     }
 
     public void setPrimaryKey(String primaryKey) {
         this.primaryKey = primaryKey;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+        primaryKey = account + name;
     }
 }

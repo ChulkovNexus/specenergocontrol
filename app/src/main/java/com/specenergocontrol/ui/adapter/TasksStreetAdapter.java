@@ -1,8 +1,10 @@
 package com.specenergocontrol.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import com.specenergocontrol.R;
 import com.specenergocontrol.model.StreetEntity;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -26,15 +30,17 @@ public class TasksStreetAdapter extends BaseExpandableListAdapter {
     private final int expandedItemColor;
     private final Drawable arrowUp;
     private final Drawable arrowDown;
+    private final Drawable arrowRight;
 
     public TasksStreetAdapter(Context context, List<StreetEntity> streets) {
         this.context = context;
         this.streets = streets;
 
-        expandedItemColor = context.getResources().getColor(R.color.building_item_color);
+        expandedItemColor = context.getResources().getColor(R.color.app_blue_color);
 
         arrowUp = context.getResources().getDrawable(R.drawable.arrow_up);
         arrowDown = context.getResources().getDrawable(R.drawable.arrow_down);
+        arrowRight = context.getResources().getDrawable(R.drawable.arrow_right);
 
     }
 
@@ -85,7 +91,7 @@ public class TasksStreetAdapter extends BaseExpandableListAdapter {
             groupHolder = (ViewHolder) convertView.getTag();
         }
 
-        groupHolder.populateView(isExpanded, getGroup(groupPosition));
+        groupHolder.populateView(isExpanded, getGroup(groupPosition), false);
 
         return convertView;
     }
@@ -102,14 +108,14 @@ public class TasksStreetAdapter extends BaseExpandableListAdapter {
             groupHolder = (ViewHolder) convertView.getTag();
         }
 
-        groupHolder.populateView(false, getChild(groupPosition, childPosition));
+        groupHolder.populateView(false, getChild(groupPosition, childPosition), true);
 
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
     private class ViewHolder {
@@ -125,21 +131,33 @@ public class TasksStreetAdapter extends BaseExpandableListAdapter {
 
             if (isChild) {
                 ((CardView) view.findViewById(R.id.street_item_card)).setCardBackgroundColor(expandedItemColor);
+                ((TextView) view.findViewById(R.id.street_item_text)).setTextColor(Color.WHITE);
             }
         }
 
-        public void populateView(boolean isExpanded, StreetEntity entity) {
-            if (isExpanded) {
+        public void populateView(boolean isExpanded, StreetEntity entity, boolean isChild) {
+            if (isChild) {
+                expandedIcon.setImageDrawable(arrowRight);
+            } else if (isExpanded) {
                 expandedIcon.setImageDrawable(arrowUp);
             } else {
                 expandedIcon.setImageDrawable(arrowDown);
             }
-            textvew.setText(entity.getEntityTitle());
-            if (entity.isComplited()) {
-                confirmedIcon.setVisibility(View.VISIBLE);
+            if (isChild) {
+                if (!TextUtils.isEmpty(entity.getTaskId())) {
+                    textvew.setText(context.getString(R.string.building_account_number, entity.getEntityTitle(), entity.getAccount()));
+                } else {
+                    textvew.setText(context.getString(R.string.building_number, entity.getEntityTitle()));
+                }
             } else {
-                confirmedIcon.setVisibility(View.INVISIBLE);
+                textvew.setText(entity.getEntityTitle());
             }
+//            if (entity.isComplited()) {
+//                confirmedIcon.setVisibility(View.VISIBLE);
+//            } else {
+//                confirmedIcon.setVisibility(View.INVISIBLE);
+//            }
+
         }
     }
 }

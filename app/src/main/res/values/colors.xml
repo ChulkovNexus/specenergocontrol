@@ -33,4 +33,5 @@
     <color name="apply_patch_button_pressed_color">#8fd88e</color>
     <color name="street_color">#e2e8a4</color>
     <color name="building_item_color">#b7bc85</color>
+    <color name="menu_item_pressed">#AAedb255</color>
 </resources>

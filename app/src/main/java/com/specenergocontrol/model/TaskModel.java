@@ -30,14 +30,7 @@ public class TaskModel extends RealmObject implements Serializable {
     private String housing;
     @Ignore
     private ArrayList<Zone> zones;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String filePath;
 
     public void setStreet(String street) {
         this.street = street;
@@ -126,5 +119,21 @@ public class TaskModel extends RealmObject implements Serializable {
 
     public ArrayList<Zone> getZones() {
         return zones;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }
