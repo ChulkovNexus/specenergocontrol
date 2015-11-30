@@ -10,10 +10,12 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by Комп on 06.08.2015.
  */
+@RealmClass
 public class TaskModel extends RealmObject implements Serializable {
 
     @PrimaryKey
@@ -30,7 +32,7 @@ public class TaskModel extends RealmObject implements Serializable {
     private String housing;
     @Ignore
     private ArrayList<Zone> zones;
-    private String filePath;
+    private String photoFilePath;
 
     public void setStreet(String street) {
         this.street = street;
@@ -129,11 +131,11 @@ public class TaskModel extends RealmObject implements Serializable {
         return id;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setPhotoFilePath(String photoFilePath) {
+        this.photoFilePath = photoFilePath;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getPhotoFilePath() {
+        return photoFilePath;
     }
 }

@@ -79,7 +79,6 @@ public class TasksActivity extends ActionBarActivity {
     private void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.dashboard_toolbar);
         setSupportActionBar(toolbar);
-        setTitle(getString(R.string.tasks_title));
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setFocusableInTouchMode(false);

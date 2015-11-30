@@ -61,7 +61,6 @@ public class StreetEntityUtils {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(streets);
         realm.commitTransaction();
-        realm.close();
     }
 
     private static void createBuildingForTask(TaskModel task, StreetEntity lastStreet) {

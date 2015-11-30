@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,9 +25,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.specenergocontrol.R;
 import com.specenergocontrol.model.TaskModel;
 import com.specenergocontrol.model.Zone;
+import com.specenergocontrol.ui.activity.TasksActivity;
+import com.specenergocontrol.utils.RealmHelper;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
+
+import io.realm.Realm;
 
 /**
  * Created by Комп on 21.08.2015.
@@ -47,25 +54,29 @@ public class FillTaskFragmetn extends AsyncFragment {
     private LinearLayout layoutZones;
     private ArrayList<View> zonesLayoutList = new ArrayList<>();
     private Uri mCapturedImageURI;
+    private EditText nameEditText;
+    private Button saveButton;
+    private boolean hasPhoto = false;
 
-    public static FillTaskFragmetn getInstance(TaskModel task) {
+    public static FillTaskFragmetn getInstance(String taskID) {
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_TASK, task);
+        args.putString(EXTRA_TASK, taskID);
 
         FillTaskFragmetn fragment = new FillTaskFragmetn();
         fragment.setArguments(args);
         return fragment;
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fill_task, container, false);
-        task = (TaskModel) getArguments().getSerializable(EXTRA_TASK);
-
+        String taskId= getArguments().getString(EXTRA_TASK);
+        task = RealmHelper.loadTask(getActivity(), taskId).get(0);
         initViews(v);
         initClickListeners();
+        ((ActionBarActivity)getActivity()).setTitle("(" + task.getAccount() + ")");
+        ((TasksActivity)getActivity()).setDrawerIndicatorEnabled(false);
         return v;
     }
 
@@ -81,8 +92,11 @@ public class FillTaskFragmetn extends AsyncFragment {
 
     private void initViews(View v) {
         accountEditText = (EditText) v.findViewById(R.id.fill_task_account_edit_text);
+        accountEditText.setVisibility(View.GONE);
+        nameEditText = (EditText) v.findViewById(R.id.fill_task_name_edit_text);
         photoImageView = (ImageView) v.findViewById(R.id.fill_task_image_preview);
         photoButton = (Button) v.findViewById(R.id.fill_task_image_button);
+        saveButton = (Button) v.findViewById(R.id.fill_task_save_button);
         layoutZones = (LinearLayout) v.findViewById(R.id.fill_task_zones_layout);
         for (Zone zone : task.getZones()) {
             View zoneLayout = LayoutInflater.from(getActivity()).inflate(R.layout.layout_zone, layoutZones, false);
@@ -92,6 +106,25 @@ public class FillTaskFragmetn extends AsyncFragment {
         }
 
         accountEditText.setText(task.getAccount());
+        nameEditText.setText(task.getUserName());
+        if (!TextUtils.isEmpty(task.getPhotoFilePath())) {
+            ImageLoader.getInstance().displayImage(Uri.fromFile(new File(task.getPhotoFilePath())).toString(), photoImageView);
+        }
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Realm realm = Realm.getInstance(getActivity());
+                realm.beginTransaction();
+                if (hasPhoto) {
+                    task.setPhotoFilePath(getPath(mCapturedImageURI));
+                }
+                realm.copyToRealmOrUpdate(task);
+                RealmHelper.saveZones(getActivity(), task, realm);
+                realm.commitTransaction();
+                Toast.makeText(getActivity(), R.string.save_confirmed, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
@@ -134,7 +167,7 @@ public class FillTaskFragmetn extends AsyncFragment {
                 if (capturedImageFilePath==null){
                     Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
                 } else {
-                    task.setFilePath(capturedImageFilePath);
+                    hasPhoto = true;
                     ImageLoader.getInstance().displayImage(mCapturedImageURI.toString(), photoImageView);
                 }
             }

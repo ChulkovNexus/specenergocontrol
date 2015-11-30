@@ -3,6 +3,7 @@ package com.specenergocontrol.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.rey.material.widget.ProgressView;
@@ -23,6 +25,7 @@ import com.specenergocontrol.ui.adapter.TasksStreetAdapter;
 import com.specenergocontrol.utils.RealmHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -72,9 +75,7 @@ public class TasksListFragment extends AsyncFragment {
                 if (TextUtils.isEmpty(myAdapter.getChild(groupPosition, childPosition).getTaskId())) {
                     setAppartmantsFragment(myAdapter.getChild(groupPosition, childPosition));
                 } else {
-                    ArrayList<TaskModel> tasksList = RealmHelper.loadTask(getActivity(),
-                            myAdapter.getChild(groupPosition, childPosition).getTaskId());
-                    setFillTaskFragment(tasksList.get(0));
+                    setFillTaskFragment(myAdapter.getChild(groupPosition, childPosition).getTaskId());
                 }
                 return false;
             }
@@ -82,6 +83,8 @@ public class TasksListFragment extends AsyncFragment {
         progressBar = (ProgressView) v.findViewById(R.id.tasks_street_progress);
         content = v.findViewById(R.id.tasks_street_content_view);
         reloadFromBase();
+        ((ActionBarActivity)getActivity()).setTitle(R.string.tasks_title);
+        ((TasksActivity)getActivity()).setDrawerIndicatorEnabled(true);
         return v;
 
     }
@@ -95,8 +98,8 @@ public class TasksListFragment extends AsyncFragment {
         ((TasksActivity)getActivity()).currentFragmentChanged(fragment);
     }
 
-    private void setFillTaskFragment(TaskModel task) {
-        FillTaskFragmetn fragment = FillTaskFragmetn.getInstance(task);
+    private void setFillTaskFragment(String taskID) {
+        FillTaskFragmetn fragment = FillTaskFragmetn.getInstance(taskID);
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.tasks_main_container, fragment, TasksActivity.FRAGMENT_TAG);
         ft.addToBackStack(null);
@@ -105,10 +108,12 @@ public class TasksListFragment extends AsyncFragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof TasksActivity) {
+            ((TasksActivity)getActivity()).currentFragmentChanged(this);
+        }
     }
-
     @Override
     public void reloadFromBase() {
         Realm realm = Realm.getInstance(getActivity());
@@ -117,6 +122,5 @@ public class TasksListFragment extends AsyncFragment {
         streetEntitiesList.clear();
         streetEntitiesList.addAll(r);
         myAdapter.notifyDataSetChanged();
-        realm.close();
     }
 }

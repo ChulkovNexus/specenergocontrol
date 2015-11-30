@@ -35,5 +35,7 @@
     <string name="building_account_number">Дом №%1$s, (%2$s)</string>
     <string name="values_hint">Показания счетчиков :</string>
     <string name="upload_from_camera">Сделать фото</string>
+    <string name="fio_hint">Ф.И.О</string>
+    <string name="save_confirmed">Сохранено</string>
 
 </resources>

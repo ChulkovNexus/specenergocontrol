@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by Комп on 07.08.2015.
  */
+@RealmClass
 public class StreetEntity extends RealmObject implements Serializable {
 
     @PrimaryKey

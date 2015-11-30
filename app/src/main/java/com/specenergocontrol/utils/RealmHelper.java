@@ -22,7 +22,6 @@ public class RealmHelper {
         for (TaskModel task: taskModels) {
             loadZones(context, task);
         }
-        realm.close();
         return taskModels;
     }
 
@@ -33,7 +32,6 @@ public class RealmHelper {
         for (TaskModel task: taskModels) {
             loadZones(context, task);
         }
-        realm.close();
         return taskModels;
     }
 
@@ -45,23 +43,21 @@ public class RealmHelper {
             saveZones(context, task, realm);
         }
         realm.commitTransaction();
-        realm.close();
     }
 
 
-    private static void saveZones(Context context, TaskModel taskModel, Realm realm){
+    public static void saveZones(Context context, TaskModel taskModel, Realm realm){
         ArrayList<Zone> zones = taskModel.getZones();
         for (Zone zone: zones) {
+            zone.setPrimaryKey(taskModel.getId() + zone.getName());
             zone.setAccount(taskModel.getAccount());
         }
         realm.copyToRealmOrUpdate(zones);
-        realm.close();
     }
 
     private static void loadZones(Context context, TaskModel taskModel){
         Realm realm = Realm.getInstance(context);
         RealmResults<Zone> r = realm.where(Zone.class).equalTo("account", taskModel.getAccount()).findAll();
         taskModel.setZones(new ArrayList<>(r));
-        realm.close();
     }
 }

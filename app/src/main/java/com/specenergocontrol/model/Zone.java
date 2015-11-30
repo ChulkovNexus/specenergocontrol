@@ -4,16 +4,19 @@ import java.io.Serializable;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by Alexander on 10.11.2015.
  */
+@RealmClass
 public class Zone extends RealmObject implements Serializable{
 
     @PrimaryKey
     private String primaryKey;
     private String account;
     private String name;
+    private String value;
     private int period;
 
     public void setName(String name) {
@@ -46,6 +49,13 @@ public class Zone extends RealmObject implements Serializable{
 
     public void setAccount(String account) {
         this.account = account;
-        primaryKey = account + name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
