@@ -1,6 +1,8 @@
 package com.specenergocontrol.ui.fragment;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,9 +30,12 @@ import com.specenergocontrol.model.Zone;
 import com.specenergocontrol.ui.activity.TasksActivity;
 import com.specenergocontrol.utils.RealmHelper;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 
 import io.realm.Realm;
 
@@ -57,6 +62,7 @@ public class FillTaskFragmetn extends AsyncFragment {
     private EditText nameEditText;
     private Button saveButton;
     private boolean hasPhoto = false;
+    private EditText commentEditText;
 
     public static FillTaskFragmetn getInstance(String taskID) {
         Bundle args = new Bundle();
@@ -94,6 +100,7 @@ public class FillTaskFragmetn extends AsyncFragment {
         accountEditText = (EditText) v.findViewById(R.id.fill_task_account_edit_text);
         accountEditText.setVisibility(View.GONE);
         nameEditText = (EditText) v.findViewById(R.id.fill_task_name_edit_text);
+        commentEditText = (EditText) v.findViewById(R.id.fill_task_comment_edit_text);
         photoImageView = (ImageView) v.findViewById(R.id.fill_task_image_preview);
         photoButton = (Button) v.findViewById(R.id.fill_task_image_button);
         saveButton = (Button) v.findViewById(R.id.fill_task_save_button);
@@ -103,6 +110,8 @@ public class FillTaskFragmetn extends AsyncFragment {
             ((TextInputLayout)zoneLayout.findViewById(R.id.fill_task_value_text_input_layout)).setHint(zone.getName());
             layoutZones.addView(zoneLayout);
             zonesLayoutList.add(zoneLayout);
+            if (!TextUtils.isEmpty(zone.getValue()))
+                ((EditText)zoneLayout.findViewById(R.id.fill_task_value_edit_text)).setText(zone.getValue());
         }
 
         accountEditText.setText(task.getAccount());
@@ -113,18 +122,69 @@ public class FillTaskFragmetn extends AsyncFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Realm realm = Realm.getInstance(getActivity());
-                realm.beginTransaction();
-                if (hasPhoto) {
-                    task.setPhotoFilePath(getPath(mCapturedImageURI));
-                }
-                realm.copyToRealmOrUpdate(task);
-                RealmHelper.saveZones(getActivity(), task, realm);
-                realm.commitTransaction();
+                boolean correct = checkZonesPeriod();
+                if (!correct)
+                    return;
+                saveTask();
                 Toast.makeText(getActivity(), R.string.save_confirmed, Toast.LENGTH_LONG).show();
             }
         });
 
+    }
+
+    private boolean checkZonesPeriod() {
+        for (int i = 0; i < zonesLayoutList.size(); i++) {
+            EditText zoneEditText = (EditText)zonesLayoutList.get(i).findViewById(R.id.fill_task_value_edit_text);
+            String zoneValue = zoneEditText.getText().toString();
+            Zone zone = task.getZones().get(i);
+            if (zoneValue.length() == zone.getPeriod()) {
+                zone.setValue(zoneValue);
+            } else {
+                showZoneAlertDialog(zone, zoneEditText);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showZoneAlertDialog(final Zone zone, final EditText zoneEditText) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+        .setMessage(getString(R.string.zones_of_device_equals_to, zoneEditText.length()))
+        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // here you can add functions
+                zoneEditText.setText("");
+                zoneEditText.requestFocus();
+            }
+        })
+        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                setMeteringDiviceScale(zoneEditText);
+                saveButton.callOnClick();
+            }
+        }).create();
+        alertDialog.show();
+    }
+
+    private void setMeteringDiviceScale(EditText zoneEditText) {
+        Realm realm = Realm.getInstance(getActivity());
+        realm.beginTransaction();
+        task.setMeteringDeviceScale(zoneEditText.getText().length());
+        realm.copyToRealmOrUpdate(task);
+        realm.commitTransaction();
+    }
+
+    private void saveTask() {
+        Realm realm = Realm.getInstance(getActivity());
+        realm.beginTransaction();
+        if (hasPhoto) {
+            task.setPhotoFilePath(getPath(mCapturedImageURI));
+        }
+        task.setComment(commentEditText.getText().toString());
+        task.setVisitDate(new Date(System.currentTimeMillis()));
+        realm.copyToRealmOrUpdate(task);
+        RealmHelper.saveZones(getActivity(), task, realm);
+        realm.commitTransaction();
     }
 
     @Override

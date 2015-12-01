@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -33,6 +34,10 @@ public class TaskModel extends RealmObject implements Serializable {
     @Ignore
     private ArrayList<Zone> zones;
     private String photoFilePath;
+    private int meteringDeviceScale;
+    private Date visitDate;
+    private String comment;
+    private String photoUrl;
 
     public void setStreet(String street) {
         this.street = street;
@@ -137,5 +142,38 @@ public class TaskModel extends RealmObject implements Serializable {
 
     public String getPhotoFilePath() {
         return photoFilePath;
+    }
+
+    public void setMeteringDeviceScale(int meteringDeviceScale) {
+        this.meteringDeviceScale = meteringDeviceScale;
+    }
+
+    public int getMeteringDeviceScale() {
+        return meteringDeviceScale;
+    }
+
+    public Date getVisitDate() {
+        return visitDate;
+    }
+
+    public void setVisitDate(Date visitDate) {
+        this.visitDate = visitDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 }

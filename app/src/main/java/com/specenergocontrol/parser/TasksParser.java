@@ -37,7 +37,7 @@ public class TasksParser implements Parser {
             if (!taskJson.isNull(APARTMENT))
                 taskModel.setApartment(taskJson.getInt(APARTMENT));
             if (!taskJson.isNull(METERING_DEVICE_SCALE))
-                taskModel.setApartment(taskJson.getInt(METERING_DEVICE_SCALE));
+                taskModel.setMeteringDeviceScale(taskJson.getInt(METERING_DEVICE_SCALE));
             taskModel.setMeteringDeviceModel(taskJson.getString(METERING_DEVICE_MODEL));
             taskModel.setMeteringDeviceNumber(taskJson.getString(METERING_DEVICE_NUMBER));
             parseZones(taskModel, taskJson);
