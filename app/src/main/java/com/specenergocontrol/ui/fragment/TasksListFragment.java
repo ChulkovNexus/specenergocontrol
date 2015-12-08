@@ -36,8 +36,8 @@ import io.realm.RealmResults;
 public class TasksListFragment extends AsyncFragment {
 
     private ExpandableListView listView;
-    private TasksStreetAdapter myAdapter;
-    private ArrayList<StreetEntity> streetEntitiesList = new ArrayList<>();
+    protected TasksStreetAdapter myAdapter;
+    protected ArrayList<StreetEntity> streetEntitiesList = new ArrayList<>();
 
 
     @Override
@@ -83,13 +83,17 @@ public class TasksListFragment extends AsyncFragment {
         progressBar = (ProgressView) v.findViewById(R.id.tasks_street_progress);
         content = v.findViewById(R.id.tasks_street_content_view);
         reloadFromBase();
-        ((ActionBarActivity)getActivity()).setTitle(R.string.tasks_title);
+        setTitle();
         ((TasksActivity)getActivity()).setDrawerIndicatorEnabled(true);
         return v;
 
     }
 
-    private void setAppartmantsFragment(StreetEntity taskModel) {
+    protected void setTitle() {
+        ((ActionBarActivity)getActivity()).setTitle(R.string.tasks_title);
+    }
+
+    protected void setAppartmantsFragment(StreetEntity taskModel) {
         AppartmentsFragmetn fragment = AppartmentsFragmetn.getInstance(taskModel.getPrimaryKey());
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.tasks_main_container, fragment, TasksActivity.FRAGMENT_TAG);

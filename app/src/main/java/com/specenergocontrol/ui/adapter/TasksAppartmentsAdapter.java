@@ -23,10 +23,10 @@ import io.realm.RealmList;
 public class TasksAppartmentsAdapter extends ArrayAdapter {
 
     private final Context context;
-    private final RealmList<StreetEntity> entities;
+    private final ArrayList<StreetEntity> entities;
     private final int expandedItemColor;
 
-    public TasksAppartmentsAdapter(Context context, RealmList<StreetEntity> entities) {
+    public TasksAppartmentsAdapter(Context context, ArrayList<StreetEntity> entities) {
         super(context, R.layout.layout_street_item);
         this.context = context;
         this.entities = entities;
@@ -77,12 +77,12 @@ public class TasksAppartmentsAdapter extends ArrayAdapter {
         }
 
         public void populateView(StreetEntity entity) {
-                textvew.setText(context.getString(R.string.appartments_number, entity.getEntityTitle(), entity.getAccount()));
-//            if (entity.isComplited()) {
-//                confirmedIcon.setVisibility(View.VISIBLE);
-//            } else {
-//                confirmedIcon.setVisibility(View.INVISIBLE);
-//            }
+            textvew.setText(context.getString(R.string.appartments_number, entity.getEntityTitle(), entity.getAccount()));
+            if (entity.isComplited()) {
+                confirmedIcon.setVisibility(View.VISIBLE);
+            } else {
+                confirmedIcon.setVisibility(View.INVISIBLE);
+            }
 
         }
     }

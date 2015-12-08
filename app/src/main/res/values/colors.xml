@@ -34,4 +34,6 @@
     <color name="street_color">#e2e8a4</color>
     <color name="building_item_color">#b7bc85</color>
     <color name="menu_item_pressed">#AAedb255</color>
+    <color name="app_green_color">#47fb00</color>
+    <color name="app_green_secondary_color">#31910b</color>
 </resources>

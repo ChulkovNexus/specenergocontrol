@@ -19,14 +19,13 @@ import java.util.ArrayList;
  */
 public class SendTasksCommand extends PostJsonRequest {
 
-    protected String url = Constants.BASE_URL + "/tasks";
+    protected String url = Constants.BASE_URL + "/audit";
 
     public SendTasksCommand(Context context, ArrayList<TaskModel> taskModels) {
         super(context);
         setUrl(url);
         setParams(generateJson(taskModels));
         setParser(new SendTasksParser(context, taskModels));
-        setNeedToken(false);
     }
 
     private String generateJson(ArrayList<TaskModel> taskModels) {

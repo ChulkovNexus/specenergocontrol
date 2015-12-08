@@ -20,6 +20,7 @@ import com.specenergocontrol.comands.AsyncTaskExecutor;
 import com.specenergocontrol.comands.Command;
 import com.specenergocontrol.comands.CommandCallback;
 import com.specenergocontrol.comands.getrequests.GetTasksCommand;
+import com.specenergocontrol.comands.postrequests.SendTasksCommand;
 import com.specenergocontrol.model.StreetEntity;
 import com.specenergocontrol.model.TaskModel;
 import com.specenergocontrol.ui.fragment.AsyncFragment;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.TimeoutException;
 
 import io.realm.Realm;
@@ -151,10 +153,18 @@ public class TasksActivity extends ActionBarActivity {
             asyncTaskExecutor.execute(new Command(asyncTaskExecutor.getActivity()) {
                 @Override
                 public Serializable execute() throws ParseException, JSONException, IOException, TimeoutException {
+                    ArrayList<TaskModel> filledTaskModels = RealmHelper.loadComplitedTasks(asyncTaskExecutor.getActivity());
+                    if (filledTaskModels!=null && !filledTaskModels.isEmpty()) {
+                        SendTasksCommand sendTasksCommand = new SendTasksCommand(asyncTaskExecutor.getActivity(), filledTaskModels);
+                        sendTasksCommand.execute();
+                        RealmHelper.removeFilledTasks(asyncTaskExecutor.getActivity());
+                    }
+
                     GetTasksCommand getTasksCommand = new GetTasksCommand(asyncTaskExecutor.getActivity());
                     ArrayList<TaskModel> tasksList = (ArrayList<TaskModel>) getTasksCommand.execute();
-                    RealmHelper.saveTasksList(tasksList, getContext());
-                    StreetEntityUtils.createStreetEntities(getContext());
+
+                    RealmHelper.saveTasksList(tasksList, asyncTaskExecutor.getActivity());
+                    StreetEntityUtils.createStreetEntities(asyncTaskExecutor.getActivity());
                     return super.execute();
                 }
             }, new CommandCallback() {

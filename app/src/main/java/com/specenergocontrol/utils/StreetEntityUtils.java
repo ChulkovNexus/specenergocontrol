@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -51,6 +52,7 @@ public class StreetEntityUtils {
             if (task.getStreet().equals(lastStreet.getEntityTitle())) {
                 createBuildingForTask(task, lastStreet);
             } else {
+
                 lastStreet = new StreetEntity();
                 lastStreet.setEntityTitle(task.getStreet());
                 StreetEntityUtils.createPrimary(lastStreet);
@@ -58,9 +60,40 @@ public class StreetEntityUtils {
                 streets.add(lastStreet);
             }
         }
+        for (StreetEntity street: streets) {
+            checkFilled(street);
+        }
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(streets);
         realm.commitTransaction();
+    }
+
+    //устанавливает Complited родителю если все ChildEntity complited
+    private static void checkFilled(StreetEntity streetEntity) {
+        RealmList<StreetEntity> buildings = streetEntity.getChildEntityArray();
+        boolean streetComplited = true;
+        for (StreetEntity building : buildings) {
+            RealmList<StreetEntity> homes = building.getChildEntityArray();
+            if (homes == null) {
+                continue;
+            } else {
+                boolean complited = true;
+                for (StreetEntity home : homes) {
+                    if (home.isComplited()==false) {
+                        complited = false;
+                    } else {
+                        building.setConteinsFilled(true);
+                    }
+                }
+                building.setComplited(complited);
+            }
+            if (building.isComplited()==false)
+                streetComplited = false;
+
+            if (building.isComplited()==true || building.isConteinsFilled())
+                streetEntity.setConteinsFilled(true);
+        }
+        streetEntity.setComplited(streetComplited);
     }
 
     private static void createBuildingForTask(TaskModel task, StreetEntity lastStreet) {
@@ -71,6 +104,7 @@ public class StreetEntityUtils {
         if (task.getApartment()==0) {
             building.setTaskId(task.getId());
             building.setAccount(task.getAccount());
+            building.setComplited(task.isFilled());
         }
         StreetEntity listBuilding = StreetEntityUtils.containsReferenceTo(lastStreet.getChildEntityArray(), building);
         if (listBuilding != null) {
@@ -86,6 +120,7 @@ public class StreetEntityUtils {
         appartment.setIsAppartment(true);
         appartment.setEntityTitle(String.valueOf(task.getApartment()));
         appartment.setTaskId(task.getId());
+        appartment.setComplited(task.isFilled());
         appartment.setAccount(task.getAccount());
         StreetEntityUtils.createPrimary(appartment);
         building.getChildEntityArray().add(appartment);

@@ -28,7 +28,7 @@
     <style name="EditText">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorHint">@color/gray</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:background">@drawable/bg_edit_text_selector</item>
         <item name="android:paddingBottom">6dp</item>
         <item name="android:textCursorDrawable">@null</item>
@@ -37,7 +37,7 @@
     <style name="MultilineEditText">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorHint">@color/gray</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:state_multiline">true</item>
         <item name="android:background">@drawable/code_edit_text_bg</item>
         <item name="android:paddingBottom">6dp</item>
@@ -46,10 +46,14 @@
 
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/authPrimary</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="colorAccent">@color/app_blue_color</item>
         <item name="colorControlNormal">@color/app_red_color</item>
         <item name="colorControlActivated">@color/app_sea_color</item>
+    </style>
+
+    <style name="EditTextGreen" parent="EditText">
+        <item name="android:background">@drawable/bg_green_edit_text_focused</item>
     </style>
 
 </resources>

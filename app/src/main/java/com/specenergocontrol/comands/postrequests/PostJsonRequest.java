@@ -52,7 +52,7 @@ public class PostJsonRequest extends Command {
         Request request = addHeaders(builder).url(url)
                 .post(RequestBody.create(MEDIA_TYPE_JSON, params))
                 .build();
-        Log.d("DEBUG", "requestUrl:" + (Constants.BASE_URL + url));
+        Log.d("DEBUG", "requestUrl:" + (url));
         Log.d("DEBUG", "headers:" + request.headers().names());
         Log.d("DEBUG", "params:" + params);
         Response response = getOkHttpClient().newCall(request).execute();
@@ -64,7 +64,6 @@ public class PostJsonRequest extends Command {
             Log.d("DEBUG", response.message());
             throw new HttpErrorException(response.code(), response.message());
         }
-
         return null;
     }
 

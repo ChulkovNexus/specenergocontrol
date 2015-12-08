@@ -38,6 +38,8 @@ public class TaskModel extends RealmObject implements Serializable {
     private Date visitDate;
     private String comment;
     private String photoUrl;
+    private boolean filled;
+    private boolean sync;
 
     public void setStreet(String street) {
         this.street = street;
@@ -175,5 +177,21 @@ public class TaskModel extends RealmObject implements Serializable {
 
     public String getPhotoUrl() {
         return photoUrl;
+    }
+
+    public void setFilled(boolean filled) {
+        this.filled = filled;
+    }
+
+    public boolean isFilled() {
+        return filled;
+    }
+
+    public void setSync(boolean sync) {
+        this.sync = sync;
+    }
+
+    public boolean isSync() {
+        return sync;
     }
 }

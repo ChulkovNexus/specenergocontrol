@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 /**
  * Created by Комп on 01.12.2015.
  */
@@ -31,10 +33,15 @@ public class SendTasksParser implements Parser {
         new StatusParser().parse(string);
         JSONObject response = new JSONObject(string);
         JSONArray data = response.getJSONArray("Data");
+        Realm realm = Realm.getInstance(context);
+        realm.beginTransaction();
         for (int i = 0; i < data.length(); i++) {
             String photoUrl = data.getString(i);
             taskModels.get(i).setPhotoUrl(photoUrl);
+            taskModels.get(i).setSync(true);
         }
+        realm.copyToRealmOrUpdate(taskModels);
+        realm.commitTransaction();
         return taskModels;
     }
 }

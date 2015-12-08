@@ -27,8 +27,6 @@
                 android:id="@+id/street_item_confirmed"
                 android:layout_width="@dimen/street_item_heigth"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:visibility="gone"
                 android:src="@drawable/sended" />
 
             <TextView
@@ -36,10 +34,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_marginLeft="25dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_dark_color"
-                android:textSize="16sp" />
+                android:textSize="22sp" />
 
             <ImageView
                 android:id="@+id/street_item_expanded_icon"

@@ -24,9 +24,9 @@ import io.realm.RealmResults;
  */
 public class AppartmentsFragmetn extends ListFragment {
 
-    private static final String EXTRA_ENTITY = "extra_entyty";
-    private TasksAppartmentsAdapter myAdapter;
-    private StreetEntity buildingEntity;
+    protected static final String EXTRA_ENTITY = "extra_entyty";
+    protected TasksAppartmentsAdapter myAdapter;
+    protected StreetEntity buildingEntity;
 
     public static AppartmentsFragmetn getInstance(String entityKey) {
         Bundle bundle = new Bundle();
@@ -40,12 +40,9 @@ public class AppartmentsFragmetn extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String key = getArguments().getString(EXTRA_ENTITY);
-        Realm realm = Realm.getInstance(getActivity());
-        buildingEntity = realm.where(StreetEntity.class).equalTo("primaryKey", key).findFirst();
-        realm.close();
+        loadFromBase();
 
-        myAdapter = new TasksAppartmentsAdapter(getActivity(), buildingEntity.getChildEntityArray());
+
         setListAdapter(myAdapter);
         getListView().setDivider(null);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,6 +54,16 @@ public class AppartmentsFragmetn extends ListFragment {
         setEmptyText(getString(R.string.there_are_no_tasks));
         ((ActionBarActivity)getActivity()).setTitle(getString(R.string.tasks_title));
         ((TasksActivity)getActivity()).setDrawerIndicatorEnabled(false);
+    }
+
+    protected void loadFromBase() {
+        String key = getArguments().getString(EXTRA_ENTITY);
+        Realm realm = Realm.getInstance(getActivity());
+        buildingEntity = realm.where(StreetEntity.class).equalTo("primaryKey", key).findFirst();
+        realm.close();
+        ArrayList<StreetEntity> arrayList = new ArrayList<>();
+        arrayList.addAll(buildingEntity.getChildEntityArray());
+        myAdapter = new TasksAppartmentsAdapter(getActivity(), arrayList);
     }
 
     private void setFillTaskFragment(String taskId) {

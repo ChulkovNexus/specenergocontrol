@@ -1,7 +1,9 @@
 package com.specenergocontrol.utils;
 
+import android.app.Activity;
 import android.content.Context;
 
+import com.specenergocontrol.model.StreetEntity;
 import com.specenergocontrol.model.TaskModel;
 import com.specenergocontrol.model.Zone;
 
@@ -59,5 +61,40 @@ public class RealmHelper {
         Realm realm = Realm.getInstance(context);
         RealmResults<Zone> r = realm.where(Zone.class).equalTo("account", taskModel.getAccount()).findAll();
         taskModel.setZones(new ArrayList<>(r));
+    }
+
+    public static ArrayList<TaskModel> loadComplitedTasks(Context context) {
+        Realm realm = Realm.getInstance(context);
+        RealmResults<TaskModel> r = realm.where(TaskModel.class).equalTo("filled", true).findAll();
+        ArrayList<TaskModel> taskModels = new ArrayList<>(r);
+        for (TaskModel task: taskModels) {
+            loadZones(context, task);
+        }
+        return taskModels;
+    }
+
+    public static void removeFilledTasks(Context context) {
+        Realm realm = Realm.getInstance(context);
+        realm.beginTransaction();
+        RealmResults<TaskModel> taskModels = realm.where(TaskModel.class).equalTo("filled", true).findAll();
+        for (TaskModel task: taskModels) {
+            removeZones(context, task);
+        }
+        taskModels.clear();
+        realm.commitTransaction();
+    }
+
+    private static void removeZones(Context context, TaskModel task) {
+        Realm realm = Realm.getInstance(context);
+        realm.where(Zone.class).equalTo("account", task.getAccount()).findAll().clear();
+    }
+
+    public static void clearAll(Context context) {
+        Realm instance = Realm.getInstance(context);
+        instance.beginTransaction();
+        instance.clear(TaskModel.class);
+        instance.clear(Zone.class);
+        instance.clear(StreetEntity.class);
+        instance.commitTransaction();
     }
 }

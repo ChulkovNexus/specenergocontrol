@@ -38,5 +38,12 @@
     <string name="fio_hint">Ф.И.О</string>
     <string name="save_confirmed">Сохранено</string>
     <string name="zones_of_device_equals_to">\"Значность ПУ равна %1$s?\"</string>
+    <string name="no">Нет</string>
+    <string name="nobody_text">Другое</string>
+    <string name="other_one">Не проживают</string>
+    <string name="other_two">Недопуск</string>
+    <string name="other_three">Безучетное потребление</string>
+    <string name="other_four">Отсутствие ПУ</string>
+    <string name="empty_value_error">Введите показание</string>
 
 </resources>

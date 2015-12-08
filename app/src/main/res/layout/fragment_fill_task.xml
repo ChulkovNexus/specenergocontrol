@@ -5,10 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.rey.material.widget.ProgressView
+        android:id="@+id/fill_task_progress"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:pv_autostart="false"
+        app:pv_circular="true"
+        app:pv_progressStyle="@style/InOutCircularProgressDrawableStyle"
+        app:pv_progressMode="indeterminate"/>
+
+
     <ScrollView
+        android:id="@+id/fill_task_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/fill_task_save_button">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,51 +51,68 @@
 
                 <EditText
                     android:id="@+id/fill_task_account_edit_text"
-                    style="@style/EditText"
+                    style="@style/EditTextGreen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:hint="@string/account_hint" />
             </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/values_hint"
-                android:textSize="18dp" />
-
-            <LinearLayout
-                android:id="@+id/fill_task_zones_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-            </LinearLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/fill_task_image_preview"
+                <LinearLayout
+                    android:id="@+id/fill_task_zones_layout"
                     android:layout_width="0dp"
-                    android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:src="@drawable/camera_icon" />
-
-                <Button
-                    android:id="@+id/fill_task_image_button"
-                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/values_hint"
+                        android:textSize="22dp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/fill_task_buttons_layout"
+                    android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/orange_button_bg"
-                    android:text="@string/photo_text" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/fill_task_image_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:src="@drawable/camera_icon" />
+
+                    <Button
+                        android:id="@+id/fill_task_error_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:textSize="20sp"
+                        android:background="@drawable/orange_button_bg"
+                        android:text="@string/nobody_text" />
+
+                    <Button
+                        android:id="@+id/fill_task_save_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="15dp"
+                        android:textSize="20sp"
+                        android:background="@drawable/green_button_bg"
+                        android:text="@string/save_text" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <EditText
@@ -100,14 +129,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/fill_task_save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/orange_button_bg"
-        android:text="@string/save_text" />
+
 </RelativeLayout>

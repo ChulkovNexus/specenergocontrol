@@ -23,6 +23,7 @@ public class StreetEntity extends RealmObject implements Serializable {
     private boolean isBuilding;
     private boolean isAppartment;
     private String account;
+    private boolean conteinsFilled;
 
     public String getEntityTitle() {
         return entityTitle;
@@ -87,5 +88,13 @@ public class StreetEntity extends RealmObject implements Serializable {
 
     public String getAccount() {
         return account;
+    }
+
+    public void setConteinsFilled(boolean conteinsFilled) {
+        this.conteinsFilled = conteinsFilled;
+    }
+
+    public boolean isConteinsFilled() {
+        return conteinsFilled;
     }
 }

@@ -152,11 +152,12 @@ public class TasksStreetAdapter extends BaseExpandableListAdapter {
             } else {
                 textvew.setText(entity.getEntityTitle());
             }
-//            if (entity.isComplited()) {
-//                confirmedIcon.setVisibility(View.VISIBLE);
-//            } else {
-//                confirmedIcon.setVisibility(View.INVISIBLE);
-//            }
+
+            if (entity.isComplited()) {
+                confirmedIcon.setVisibility(View.VISIBLE);
+            } else {
+                confirmedIcon.setVisibility(View.INVISIBLE);
+            }
 
         }
     }

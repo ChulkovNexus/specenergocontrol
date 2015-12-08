@@ -13,11 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.specenergocontrol.R;
+import com.specenergocontrol.model.StreetEntity;
+import com.specenergocontrol.model.TaskModel;
+import com.specenergocontrol.model.Zone;
 import com.specenergocontrol.ui.activity.TasksActivity;
 import com.specenergocontrol.ui.activity.StartActivity;
+import com.specenergocontrol.utils.RealmHelper;
 import com.specenergocontrol.utils.StoreUtils;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
 
 /**
  * Created by Комп on 13.07.2015.
@@ -67,6 +73,11 @@ public class MenuFragment extends Fragment {
         notSendedTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (currentState != State.DoesntSendedTasks) {
+                    currentState = State.DoesntSendedTasks;
+                    FilledTasksListFragment fragment = new FilledTasksListFragment();
+                    setFragment(fragment, v);
+                }
             }
         });
         serchButton.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +116,7 @@ public class MenuFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 StoreUtils.getInstance(getActivity()).clearData();
+                                RealmHelper.clearAll(getActivity());
                                 Intent intent = new Intent(getActivity(), StartActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 getActivity().startActivity(intent);

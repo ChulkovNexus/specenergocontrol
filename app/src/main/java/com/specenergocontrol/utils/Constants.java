@@ -11,7 +11,7 @@ public class Constants {
     public static final String USER_AGENT = "android";
 
     public static SimpleDateFormat getVisitDateFormatter() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.SSS");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return format;
     }
 }

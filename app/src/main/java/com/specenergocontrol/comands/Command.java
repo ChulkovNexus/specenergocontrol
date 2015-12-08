@@ -125,7 +125,6 @@ public abstract class Command implements Serializable {
             builder.addHeader(AUTHORIZATION, "Token" + token);
         }
         return builder.addHeader(USER_AGENT, Constants.USER_AGENT)
-                .addHeader(USER_AGENT, Constants.USER_AGENT)
                 .addHeader(ACCEPT, APPLICATION_JSON)
                 .addHeader(CONTENT_TYPE, APPLICATION_JSON);
     }
