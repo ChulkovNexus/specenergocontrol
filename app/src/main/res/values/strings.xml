@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Спецэнергоконтроль</string>
+    <string name="app_name">Донэнергоконтроль</string>
 
     <!-- Errors-->
     <string name="exception_no_internet">Проверьте интернет соединение</string>
@@ -45,5 +45,11 @@
     <string name="other_three">Безучетное потребление</string>
     <string name="other_four">Отсутствие ПУ</string>
     <string name="empty_value_error">Введите показание</string>
+    <string name="options_title">Настройки</string>
+    <string name="incorrect_pin">Не верный PIN</string>
+    <string name="sign_out_text">Выход</string>
+    <string name="relogin_text">Сменить аккаунт</string>
+    <string name="options_dialog_allert">Введите PIN</string>
+    <string name="auth_error">Ошибка авторизации</string>
 
 </resources>

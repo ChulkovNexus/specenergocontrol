@@ -21,11 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/sign_in_title_image"
+        <TextView
+            android:id="@+id/sign_in_user_name_text"
             android:layout_width="match_parent"
-            android:src="@drawable/main_logo"
+            android:gravity="bottom"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
             android:layout_height="180dp"
+            android:textSize="22sp"
+            android:paddingBottom="25dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
             android:layout_marginTop="25dp" />
@@ -34,7 +38,7 @@
             android:id="@+id/sign_in_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sign_in_title_image"
+            android:layout_below="@+id/sign_in_user_name_text"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:background="@drawable/auth_button_shape"
@@ -57,12 +61,26 @@
             android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="25dp"
+            android:layout_below="@+id/sign_in_password"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/orange_button_bg"
+            android:text="@string/relogin_text"
+            android:textColor="@color/text_dark_color" />
+
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:background="@drawable/auth_button_bg"
-            android:text="@string/sign_in_text"
+            android:text="@string/sign_out_text"
             android:textColor="@color/text_dark_color" />
 
     </RelativeLayout>

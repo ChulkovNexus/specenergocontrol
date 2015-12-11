@@ -19,7 +19,7 @@ public class StoreUtils {
 
     //User
     public static final String ID = "id";
-//    public static final String NAME = "name";
+    public static final String NAME = "name";
 //    public static final String EMAIL = "email";
 //    public static final String BALANCE = "balance";
 //    public static final String NICKNAME = "nickname";
@@ -73,7 +73,7 @@ public class StoreUtils {
         User user = new User();
         user.setId(mPreferences.getString(ID, ""));
 //        user.setId(mPreferences.getInt(PHONE, 0));
-//        user.setName(mPreferences.getString(NAME, ""));
+        user.setName(mPreferences.getString(NAME, ""));
 //        user.setEmail(mPreferences.getString(EMAIL, ""));
 //        user.setBalance(mPreferences.getFloat(BALANCE, 0));
 //        user.setBalance(mPreferences.getFloat(BONUS_BALANCE, 0));
@@ -92,7 +92,7 @@ public class StoreUtils {
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.putString(ID, user.getId());
 //        edit.putInt(PHONE, user.getPhone());
-//        edit.putString(NAME, user.getName());
+        edit.putString(NAME, user.getName());
 //        edit.putString(EMAIL, user.getEmail());
 //        edit.putFloat(BALANCE, (float) user.getBalance());
 //        edit.putFloat(BONUS_BALANCE, (float) user.getBalance());
@@ -106,23 +106,6 @@ public class StoreUtils {
         edit.commit();
     }
 
-//    public void setUserAvatar(String userAvatar) {
-//        SharedPreferences.Editor edit = mPreferences.edit();
-//        edit.putString(IMAGE, userAvatar);
-//        edit.putString(IMAGE, userAvatar);
-//        edit.commit();
-//    }
-//
-//    public void pinSetted() {
-//        SharedPreferences.Editor edit = mPreferences.edit();
-//        edit.putBoolean(PIN_SETTED, true);
-//        edit.commit();
-//    }
-//
-//    public boolean isPinSetted() {
-//        return mPreferences.getBoolean(PIN_SETTED, false);
-//    }
-//
     public void clearData() {
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.remove(TOKEN);

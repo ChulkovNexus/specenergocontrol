@@ -27,8 +27,10 @@ public class SignInParser implements Parser {
         JSONObject mainJsonObject = new JSONObject(string);
         String token = mainJsonObject.getString(TOKEN);
         String id = mainJsonObject.getString(ID);
+        String name = mainJsonObject.getString(USER_NAME);
         User user = new User();
         user.setId(id);
+        user.setName(name);
         StoreUtils.getInstance(context).setUser(user);
         StoreUtils.getInstance(context).setToken(token);
         return true;

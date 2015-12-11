@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:padding="35dp"
-            android:src="@drawable/logo" />
+            android:src="@drawable/main_logo" />
 
         <RelativeLayout
             android:layout_below="@+id/menu_logo"
@@ -49,7 +49,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/menu_search_button"
+            android:id="@+id/menu_options"
             android:background="@drawable/menu_item_bg"
             android:layout_below="@+id/menu_doesnt_sended_tasks_button"
             android:layout_width="match_parent"
@@ -60,17 +60,17 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="@string/search_abonent_title"
+                android:text="@string/options_title"
                 android:textColor="@color/text_dark_color"
                 android:textSize="18sp" />
         </RelativeLayout>
 
-
         <RelativeLayout
-            android:layout_alignParentBottom="true"
-            android:id="@+id/menu_logout_button"
-            android:layout_width="match_parent"
+            android:id="@+id/menu_search_button"
             android:background="@drawable/menu_item_bg"
+            android:layout_below="@+id/menu_options"
+            android:visibility="gone"
+            android:layout_width="match_parent"
             android:layout_height="55dp">
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="@string/logout_title"
+                android:text="@string/search_abonent_title"
                 android:textColor="@color/text_dark_color"
                 android:textSize="18sp" />
         </RelativeLayout>

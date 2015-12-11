@@ -102,6 +102,15 @@ public class AsyncTaskExecutor {
             } catch (ConnectException e) {
                 e.printStackTrace();
                 return new Pair(ERROR_CODE_INTERNET_EXCEPTION, null);
+            } catch (HttpErrorException e) {
+                e.printStackTrace();
+                if (e.getCode()==401 || e.getCode()==400) {
+                    return new Pair(ERROR_CODE_UNAUTHORIZED, null);
+                } else if (e.getCode()>=401) {
+                    return new Pair(ERROR_CODE_HTTP_SERVER_EXCEPTION, null);
+                } else {
+                    return new Pair(ERROR_CODE_HTTP_CLIENT_EXCEPTION, null);
+                }
             } catch (BussinessException e) {
                 e.printStackTrace();
                 if (e.getCode()!=0){
@@ -138,11 +147,11 @@ public class AsyncTaskExecutor {
                 } else if (errorCode == ERROR_CODE_BUSSINESS_EXCEPTION || errorCode == ERROR_CODE_INTERNAL_EXCEPTION) {
                     Toast.makeText(command.getContext(), R.string.error, Toast.LENGTH_LONG).show();
                 } else if (errorCode == ERROR_CODE_HTTP_CLIENT_EXCEPTION) {
-                    ErrorHandler.parseError(activity, (String)result.second);
-                    Toast.makeText(command.getContext(), R.string.exception_client_error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(command.getContext(), R.string.error, Toast.LENGTH_LONG).show();
                 } else if (errorCode == ERROR_CODE_HTTP_SERVER_EXCEPTION) {
-                    ErrorHandler.parseError(activity, (String)result.second);
                     Toast.makeText(command.getContext(), R.string.exception_server_error, Toast.LENGTH_LONG).show();
+                } else if (errorCode == ERROR_CODE_UNAUTHORIZED) {
+                    Toast.makeText(command.getContext(), R.string.auth_error, Toast.LENGTH_LONG).show();
                 }
                 callback.commandExecutedWithError(errorCode);
             }
