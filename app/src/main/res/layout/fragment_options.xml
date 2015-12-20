@@ -64,11 +64,20 @@
             android:layout_marginBottom="25dp"
             android:layout_below="@+id/sign_in_password"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp"
             android:layout_marginRight="25dp"
+            android:layout_marginTop="25dp"
             android:background="@drawable/orange_button_bg"
             android:text="@string/relogin_text"
             android:textColor="@color/text_dark_color" />
+
+        <CheckBox
+            android:id="@+id/test_base_checkbox"
+            android:text="@string/dev_api_mod"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_below="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
         <Button

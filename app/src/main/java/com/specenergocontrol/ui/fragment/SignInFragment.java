@@ -52,7 +52,7 @@ public class SignInFragment extends AsyncFragment {
                 String passwordText = passwordEditText.getText().toString();
                 if (checkCorrectData(loginText, passwordText)){
                     showProgress(true);
-                    asyncTaskExecutor.execute(new SignInCommand(getActivity(), loginText, passwordText), new CommandCallback() {
+                    asyncTaskExecutor.execute(new SignInCommand(getActivity(), loginText, passwordText, false), new CommandCallback() {
                         @Override
                         public void commandSuccessExecuted(Serializable result) {
                             showProgress(false, new Runnable() {

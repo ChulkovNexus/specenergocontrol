@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ public class OptionsFragment extends AsyncFragment {
     private Button signInButton;
     private Button signOutButton;
     private TextView nameText;
+    private CheckBox testBaseCheckbox;
 
     @Nullable
     @Override
@@ -43,6 +46,7 @@ public class OptionsFragment extends AsyncFragment {
         nameText = (TextView) v.findViewById(R.id.sign_in_user_name_text);
         loginEditText = (EditText) v.findViewById(R.id.sign_in_login);
         passwordEditText = (EditText) v.findViewById(R.id.sign_in_password);
+        testBaseCheckbox = (CheckBox) v.findViewById(R.id.test_base_checkbox);
         signInButton = (Button) v.findViewById(R.id.sign_in_button);
         signOutButton = (Button) v.findViewById(R.id.sign_out_button);
         content = v.findViewById(R.id.sign_in_content);
@@ -57,6 +61,7 @@ public class OptionsFragment extends AsyncFragment {
     }
 
     private void initClickListeners() {
+        testBaseCheckbox.setChecked(StoreUtils.getInstance(getActivity()).getTestApi());
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,12 +69,13 @@ public class OptionsFragment extends AsyncFragment {
                 String passwordText = passwordEditText.getText().toString();
                 if (checkCorrectData(loginText, passwordText)) {
                     showProgress(true);
-                    asyncTaskExecutor.execute(new SignInCommand(getActivity(), loginText, passwordText), new CommandCallback() {
+                    asyncTaskExecutor.execute(new SignInCommand(getActivity(), loginText, passwordText, testBaseCheckbox.isChecked()), new CommandCallback() {
                         @Override
                         public void commandSuccessExecuted(Serializable result) {
                             showProgress(false, new Runnable() {
                                 @Override
                                 public void run() {
+                                    StoreUtils.getInstance(getActivity()).setTestApi(testBaseCheckbox.isChecked());
                                     String userName = StoreUtils.getInstance(getActivity()).getUser().getName();
                                     nameText.setText(userName);
                                 }

@@ -46,7 +46,6 @@ public class PostJsonRequest extends Command {
         if (!HttpUtils.checkInternet(getContext()))
             throw new ConnectException();
 
-        Log.d(TAG, url);
         Request.Builder builder = new Request.Builder();
 
         Request request = addHeaders(builder).url(url)

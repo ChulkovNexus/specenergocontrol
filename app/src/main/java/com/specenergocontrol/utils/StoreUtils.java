@@ -32,6 +32,7 @@ public class StoreUtils {
 //    public static final String PHONE = "phone";
 //    public static final String PROMO = "promo_code";
     private static final String SESSION_ID = "session_id";
+    private static final String TEST_BASE = "test_base";
     //
 
     private final SharedPreferences mPreferences;
@@ -109,7 +110,7 @@ public class StoreUtils {
     public void clearData() {
         SharedPreferences.Editor edit = mPreferences.edit();
         edit.remove(TOKEN);
-        edit.remove(SESSION_ID);
+        edit.remove(TEST_BASE);
         edit.commit();
     }
 
@@ -131,13 +132,14 @@ public class StoreUtils {
         return false;
     }
 
-    public String getSessionId() {
-        return mPreferences.getString(SESSION_ID, "");
-    }
-
-    public void setSessionId(String sessionId) {
+    public void setTestApi(boolean test) {
         SharedPreferences.Editor edit = mPreferences.edit();
-        edit.putString(SESSION_ID, sessionId);
+        edit.putBoolean(TEST_BASE, test);
         edit.commit();
     }
+
+    public boolean getTestApi() {
+        return mPreferences.getBoolean(TEST_BASE, false);
+    }
+
 }

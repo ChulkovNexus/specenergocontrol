@@ -9,8 +9,8 @@
 
     <!-- Auth activity-->
     <string name="sign_in_text">ВХОД</string>
-    <string name="email_hint_text">Email</string>
-    <string name="password_hint_text">Password</string>
+    <string name="email_hint_text">Пользователь</string>
+    <string name="password_hint_text">Пароль</string>
     <string name="email_valid_error">Введите Login</string>
     <string name="password_valid_error">Введите пароль</string>
 
@@ -51,5 +51,6 @@
     <string name="relogin_text">Сменить аккаунт</string>
     <string name="options_dialog_allert">Введите PIN</string>
     <string name="auth_error">Ошибка авторизации</string>
+    <string name="dev_api_mod">Тестовая база</string>
 
 </resources>

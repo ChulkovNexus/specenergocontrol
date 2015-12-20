@@ -15,11 +15,11 @@ public class SignInCommand extends PostJsonRequest {
 
     private static final String PASSWORD = "password";
     private final String USER_NAME = "login";
-    protected String url = Constants.BASE_URL + "/login";
+    protected String url = "/login";
 
-    public SignInCommand(Context context, String loginText, String passwordText) {
+    public SignInCommand(Context context, String loginText, String passwordText, boolean test) {
         super(context);
-        setUrl(url);
+        setUrl(Constants.getBaseURL(test) + url);
         setParams(generateJson(loginText, passwordText));
         setParser(new SignInParser(context));
         setNeedToken(false);
